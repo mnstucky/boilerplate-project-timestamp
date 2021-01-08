@@ -24,6 +24,11 @@ app.get("/api/hello", function (req, res) {
 });
 
 // timestamp API
+app.get("/api/timestamp/", function (req, res) {
+  const date = new Date();
+  res.send({ unix: date.valueOf(), utc: date.toUTCString() });
+});
+
 app.get("/api/timestamp/:date", function (req, res) {
   let input = req.params.date;
   if (/^\d*$/) {
