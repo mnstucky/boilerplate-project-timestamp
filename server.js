@@ -31,11 +31,18 @@ app.get("/api/timestamp/", function (req, res) {
 
 app.get("/api/timestamp/:date", function (req, res) {
   let input = req.params.date;
-  if (/^\d*$/) {
+  if (input.charAt(input.length - 1) === "?") {
+    input = input.slice(0, input.length - 1);
+  }
+  if (/^\d*$/.test(input)) {
     input = Number.parseInt(input);
   }
   const date = new Date(input);
-  res.send({ unix: date.valueOf(), utc: date.toUTCString() });
+  if (date.toDateString() === "Invalid Date") {
+    res.send({ error: "Invalid Date" });
+  } else {
+    res.send({ unix: date.valueOf(), utc: date.toUTCString() });
+  }
 });
 
 // listen for requests :)
